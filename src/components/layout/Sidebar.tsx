@@ -21,8 +21,8 @@ import {
   HeartPulse,
   Sparkles,
   Wand2,
-  Trophy,
   Users,
+  UserCircle2,
   ChevronDown,
   Globe,
   LucideIcon
@@ -39,9 +39,10 @@ type CategoryItem = {
 const MAIN_NAV = [
   { id: "home", label: "Home", icon: Home, href: "/" },
   { id: "all-models", label: "All Models", icon: Shapes, href: "/models" },
-  { id: "contests", label: "Contests", icon: Trophy, href: "/contests" },
+  { id: "ai-lab", label: "3D Foundry", icon: Sparkles, href: "/ai-foundry" },
   { id: "maker-tools", label: "Maker Tools", icon: Wrench, href: "/tools" },
   { id: "community", label: "Community", icon: Users, href: "/community" },
+  { id: "account", label: "Account", icon: UserCircle2, href: "/account" },
 ];
 
 const CATEGORIES: CategoryItem[] = [

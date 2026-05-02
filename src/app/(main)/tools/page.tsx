@@ -1,7 +1,5 @@
-import Link from "next/link";
-import { Wrench, Box, Move3d, Cloud, ArrowRight, ExternalLink } from "lucide-react";
+import { Wrench, Box, Move3d, Cloud, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 
 export default function ToolsPage() {
@@ -73,7 +71,7 @@ export default function ToolsPage() {
 
       {/* Internal Tools Teaser */}
       <div className="bg-card border rounded-2xl p-8 md:p-12 text-center mt-12 space-y-6 max-w-4xl mx-auto shadow-sm">
-        <h2 className="text-2xl font-bold font-display">MakerVerse Native Tools</h2>
+        <h2 className="text-2xl font-bold font-display">Melted Modulus Native Tools</h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           We are currently developing built-in tools for STL repair, basic mesh modification, and G-Code previewing. Coming in Phase 4.
         </p>

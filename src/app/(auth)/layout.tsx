@@ -15,7 +15,7 @@ export default function AuthLayout({
             <Box className="h-5 w-5" />
           </div>
           <span className="font-display font-bold text-xl tracking-tight">
-            Maker<span className="text-primary">Verse</span>
+            Melted<span className="text-primary">Modulus</span>
           </span>
         </Link>
       </header>

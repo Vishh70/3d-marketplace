@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { ModelCard, type ModelData } from "./ModelCard";
+import { ModelCard } from "./ModelCard";
+import { type ModelData } from "@/data/mock";
+import { ModelSkeleton } from "./ModelSkeleton";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { cn } from "@/lib/utils";
 import { LayoutGrid, List } from "lucide-react";
@@ -16,6 +18,12 @@ interface ModelGridProps {
   showControls?: boolean;
 }
 
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 export function ModelGrid({ 
   models, 
   isLoading, 
@@ -25,6 +33,29 @@ export function ModelGrid({
   showControls = true
 }: ModelGridProps) {
   const [view, setView] = React.useState<"grid" | "list">("grid");
+  const gridRef = React.useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (gridRef.current) {
+      gsap.fromTo(
+        ".model-card-item",
+        { opacity: 0, y: 30, scale: 0.95 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          duration: 0.6, 
+          stagger: 0.08, 
+          ease: "back.out(1.7)",
+          overwrite: "auto",
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 85%",
+          }
+        }
+      );
+    }
+  }, { dependencies: [models, isLoading, view], scope: gridRef });
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -55,13 +86,21 @@ export function ModelGrid({
       )}
 
       {view === "grid" ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {models.map((model) => (
-            <ModelCard key={model.id} model={model} />
-          ))}
-          {isLoading && (
-            Array.from({ length: 4 }).map((_, i) => (
-              <div key={`skeleton-${i}`} className="rounded-xl border bg-card aspect-[4/3] animate-pulse" />
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+        >
+          {isLoading ? (
+            Array.from({ length: 8 }).map((_, i) => (
+              <div key={`skeleton-${i}`} className="model-card-item opacity-0">
+                <ModelSkeleton />
+              </div>
+            ))
+          ) : (
+            models.map((model) => (
+              <div key={model.id} className="model-card-item opacity-0">
+                <ModelCard model={model} />
+              </div>
             ))
           )}
         </div>

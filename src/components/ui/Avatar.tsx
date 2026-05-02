@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { CheckCircle2 } from "lucide-react";
 
@@ -29,10 +30,12 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
           )}
         >
           {src ? (
-            <img
+            <Image
               src={src}
               alt={alt || "Avatar"}
-              className="aspect-square h-full w-full object-cover"
+              fill
+              sizes="64px"
+              className="object-cover"
             />
           ) : (
             <span className="font-medium text-muted-foreground uppercase">
