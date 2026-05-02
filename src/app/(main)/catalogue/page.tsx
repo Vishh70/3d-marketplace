@@ -6,9 +6,14 @@ import { Button } from "@/components/ui/Button";
 import { ModelGrid } from "@/components/models/ModelGrid";
 import { type ModelData } from "@/data/mock";
 
+type Category = {
+  id: string;
+  name: string;
+};
+
 export default function CataloguePage() {
   const [models, setModels] = useState<ModelData[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");

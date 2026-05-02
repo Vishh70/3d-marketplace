@@ -35,7 +35,7 @@ const STEPS = [
 export function ModelUploadForm() {
   const [step, setStep] = React.useState(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [categories, setCategories] = React.useState<any[]>([]);
+  const [categories, setCategories] = React.useState<{ id: string; name: string }[]>([]);
   const [files, setFiles] = React.useState<{ stl: File | null; image: File | null }>({ stl: null, image: null });
 
   const form = useForm<FormValues>({

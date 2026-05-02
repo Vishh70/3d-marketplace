@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const nextConfig: any = {
   typescript: {
     // Type checking is handled locally — skip during Vercel build to prevent env-var related failures
     ignoreBuildErrors: true,

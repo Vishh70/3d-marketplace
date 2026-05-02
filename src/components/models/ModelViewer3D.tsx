@@ -130,7 +130,7 @@ interface ModelViewer3DProps {
 export function ModelViewer3D({ title = "3D Preview", type = "figurine", height = "h-[480px]" }: ModelViewer3DProps) {
   const [autoRotate, setAutoRotate] = useState(true);
   const [wireframe, setWireframe] = useState(false);
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<THREE.EventDispatcher>(null);
 
   const resetCamera = () => {
     if (controlsRef.current) {
