@@ -14,7 +14,6 @@ import {
   ArrowDownToLine,
   Eye,
   CreditCard,
-  LucideIcon,
   ShoppingBag,
   PackageCheck,
   Printer,
@@ -103,11 +102,9 @@ type ActivityItem = {
 type AccountPageClientProps = {
   user: UserData;
   metrics: Metric[];
-  latestActivity?: ActivityItem[];
-  roleLabel?: string;
 };
 
-export function AccountPageClient({ user, metrics, latestActivity = [], roleLabel = "User" }: AccountPageClientProps) {
+export function AccountPageClient({ user, metrics }: AccountPageClientProps) {
   const [activeTab, setActiveTab] = React.useState("dashboard");
   const container = React.useRef<HTMLDivElement>(null);
 
