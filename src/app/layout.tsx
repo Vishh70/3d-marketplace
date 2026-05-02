@@ -51,10 +51,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         {/* Load critical external scripts at body root */}
         <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="afterInteractive"
-        />
-        <Script
           src="https://js.puter.com/v2/"
           strategy="afterInteractive"
         />

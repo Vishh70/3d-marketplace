@@ -211,7 +211,7 @@ export function AccountPageClient({ user, metrics }: AccountPageClientProps) {
                   </div>
                   <div className="flex gap-3">
                      <span className="text-primary/50 font-black whitespace-nowrap">14:25:45</span>
-                     <p>[INFO] Webhook ping from Razorpay-PROD: 200 OK</p>
+                     <p>[INFO] Simulated Webhook ping from Checkout: 200 OK</p>
                   </div>
                   <div className="flex gap-3">
                      <span className="text-orange-500/50 font-black whitespace-nowrap">14:28:10</span>
@@ -417,7 +417,7 @@ export function AccountPageClient({ user, metrics }: AccountPageClientProps) {
             <div className="pt-6 border-t border-white/5 space-y-4">
                <h3 className="text-sm font-bold flex items-center gap-2"><CreditCard className="h-4 w-4 text-primary" /> Saved Payment Methods</h3>
                <div className="p-4 rounded-2xl border border-white/5 bg-black/20 text-xs text-slate-500 text-center">
-                  Securely stored via Razorpay Vault. No cards on file.
+                  Simulated Purchases. No cards on file.
                </div>
             </div>
           </CardContent>

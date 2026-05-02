@@ -2,18 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
-import { ShoppingBag, CreditCard, ShieldCheck, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ShoppingBag, ArrowRight, Loader2, CheckCircle2, FlaskConical } from "lucide-react";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -22,69 +20,24 @@ export default function CheckoutPage() {
     }
   }, [items, router, status]);
 
-  const handlePayment = async () => {
+  const handleSimulatePayment = async () => {
     setLoading(true);
     setError("");
 
     try {
-      // 1. Initialize Order
-      const res = await fetch("/api/checkout", {
+      const res = await fetch("/api/checkout/simulate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items, totalAmount: totalPrice }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to initialize checkout");
+      if (!res.ok) throw new Error(data.error || "Failed to simulate checkout");
 
-      // 2. Open Razorpay Modal
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: data.amount,
-        currency: data.currency,
-        name: "Melted Modulus",
-        description: "3D Marketplace Transaction",
-        order_id: data.razorpayOrderId,
-        handler: async function (response: any) {
-          setStatus("processing");
-          // 3. Verify Payment
-          const verifyRes = await fetch("/api/checkout/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              orderId: data.orderId,
-            }),
-          });
-
-          const verifyData = await verifyRes.json();
-          if (verifyRes.ok) {
-            setStatus("success");
-            clearCart();
-          } else {
-            setError(verifyData.message || "Payment verification failed");
-            setStatus("error");
-          }
-        },
-        prefill: {
-          name: "", // Can prefill if user is logged in
-          email: "",
-        },
-        theme: {
-          color: "#fa6831",
-        },
-      };
-
-      const rzp = new (window as any).Razorpay(options);
-      rzp.on("payment.failed", function (response: any) {
-        setError(response.error.description);
-        setStatus("error");
-      });
-      rzp.open();
+      setStatus("success");
+      clearCart();
     } catch (err: any) {
-      setError(err.message || "An error occurred during checkout");
+      setError(err.message || "An error occurred during simulated checkout");
       setStatus("error");
     } finally {
       setLoading(false);
@@ -99,9 +52,9 @@ export default function CheckoutPage() {
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
               <CheckCircle2 className="h-10 w-10" />
             </div>
-            <CardTitle className="mt-6 text-3xl font-black text-white">Payment Successful!</CardTitle>
+            <CardTitle className="mt-6 text-3xl font-black text-white">Purchase Simulated!</CardTitle>
             <CardDescription className="text-slate-400">
-              Thank you for your purchase. Your models are now available in your account.
+              This was a test checkout. Your simulated order was created and the models are available in your account.
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-10">
@@ -153,7 +106,7 @@ export default function CheckoutPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
             <CardHeader>
               <CardTitle>Total Summary</CardTitle>
-              <CardDescription>Final amount to be paid securely via Razorpay.</CardDescription>
+              <CardDescription>Simulate a free test purchase without a payment gateway.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
@@ -180,27 +133,26 @@ export default function CheckoutPage() {
               <div className="space-y-3">
                 <Button 
                   className="h-14 w-full rounded-2xl bg-primary text-lg font-black text-white shadow-xl shadow-primary/20 transition-all active:scale-95 group"
-                  disabled={loading || status === "processing"}
-                  onClick={handlePayment}
+                  disabled={loading}
+                  onClick={handleSimulatePayment}
                 >
-                  {loading || status === "processing" ? (
+                  {loading ? (
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   ) : (
-                    <CreditCard className="mr-2 h-5 w-5" />
+                    <FlaskConical className="mr-2 h-5 w-5" />
                   )}
-                  {status === "processing" ? "VERIFYING..." : "PAY SECURELY"}
+                  {loading ? "PROCESSING..." : "SIMULATE PURCHASE"}
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 
                 <p className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
-                  <ShieldCheck className="h-3 w-3 text-emerald-500" />
-                  Secured by Razorpay India
+                  Real payments disabled
                 </p>
               </div>
             </CardContent>
             <CardFooter className="bg-black/20 p-6">
               <p className="text-[10px] leading-relaxed text-slate-500 text-center uppercase tracking-widest">
-                By completing this payment, you agree to the Melted Modulus terms of service and license agreement.
+                By completing this simulated payment, you agree to the Melted Modulus terms of service and license agreement.
               </p>
             </CardFooter>
           </Card>
@@ -209,3 +161,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
