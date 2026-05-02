@@ -4,11 +4,21 @@ import Razorpay from "razorpay";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
-  const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-  });
+  const key_id = process.env.RAZORPAY_KEY_ID;
+  const key_secret = process.env.RAZORPAY_KEY_SECRET;
+
+  if (!key_id || !key_secret) {
+    console.error("RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET is missing");
+    return NextResponse.json(
+      { message: "Payment system is not configured" },
+      { status: 500 }
+    );
+  }
+
+  const razorpay = new Razorpay({ key_id, key_secret });
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
