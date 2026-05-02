@@ -172,7 +172,7 @@ export function GrokAssistant() {
             {!isMinimized && (
               <>
                 {/* Chat Area */}
-                <div className="flex-1 overflow-y-auto p-5 space-y-4 scrollbar-hide">
+                <div className="flex-1 overflow-y-scroll p-5 space-y-4 scrollbar-hide overscroll-contain">
                   <AnimatePresence initial={false}>
                     {messages.map((msg, i) => (
                       <motion.div 
